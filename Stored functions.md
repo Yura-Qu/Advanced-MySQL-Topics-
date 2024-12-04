@@ -65,7 +65,7 @@ no_of_years(start_date) as 'years' from employee;
 
 https://www.red-gate.com/simple-talk/databases/mysql/working-with-mysql-stored-functions/ 
 
-Dataset: 
+***Dataset:*** 
 ```sql
 DROP DATABASE IF EXISTS travel;
 CREATE DATABASE travel;
@@ -121,7 +121,7 @@ VALUES
          43.17, 29.60, 'P46T'),
   ('J-3 Cub', 1003, 'piston', 1, 1220, 38.00, 22.42, 'J3');
 ```
-
+***stored function 1***
 ```sql
 DELIMITER //
 CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
@@ -144,6 +144,32 @@ DELIMITER ;
    END
    ```
    The function body must contain one RETURN statement.
-6. 
+
+***testing stored function 1***
+```sql
+DELIMITER 
+//
+CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
+RETURNS MEDIUMINT UNSIGNED 
+DETERMINISTIC
+
+BEGIN
+  RETURN (lbs * 0.45359237);
+END
+
+//
+DELIMITER ;
+```
+
+```sql
+SELECT a.plane, max_weight AS max_lbs, 
+  lbs_to_kg(max_weight) AS max_kg
+FROM airplanes a  JOIN manufacturers m
+  ON a.manufacturer_id = m.manufacturer_id
+WHERE m.manufacturer = 'airbus'
+ORDER BY a.plane;
+```
+
+
    
 

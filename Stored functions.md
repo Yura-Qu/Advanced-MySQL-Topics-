@@ -22,3 +22,41 @@ CREATE FUNCTION function_name(func_parameter1, func_parameter2, ..)
     ```
     
     **The function body must contain one RETURN statement.**
+
+**Example:  find the number of years the employee has been in the company**
+
+| **emp_id** | **fname** | **lname** | **start_date** |
+| --- | --- | --- | --- |
+| 1 | Michael | Smith | 2001-06-22 |
+| 2 | Susan | Barker | 2002-09-12 |
+| 3 | Robert | Tvler | 2000-02-09 |
+| 4 | Susan | Hawthorne | 2002-04-24 |
+
+```sql
+DELIMITER //
+
+CREATE FUNCTION no_of_years(date1 date) RETURNS int DETERMINISTIC
+BEGIN
+ DECLARE date2 DATE;
+  Select current_date()into date2;
+  RETURN year(date2)-year(date1);
+END 
+
+//
+
+DELIMITER ;
+
+Select emp_id, fname, lname, 
+no_of_years(start_date) as 'years' from employee;
+```
+
+| **emp_id** | **fname** | **lname** | **years** |
+| --- | --- | --- | --- |
+| 1 | Michael | Smith | 18 |
+| 2 | Susan | Barker | 17 |
+| 3 | Robert | Tvler | 19 |
+| 4 | Susan | Hawthorne | 17 |
+1. function name: no_of_years
+2. function parameter: start_date
+3. datatype: int 
+4. **characteristics:** DETERMINISTIC

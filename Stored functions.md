@@ -189,17 +189,7 @@ FROM airplanes a INNER JOIN manufacturers m
   ON a.manufacturer_id = m.manufacturer_id
 ORDER BY m.manufacturer, a.plane;
 ```
-manufacturer	plane	max_lbs	max_kg
-Airbus	A300-200 (A300-C4-200, F4-200)	363760	164999 kg exceeds runway weight limits.
-Airbus	A319neo Sharklet	166449	75500 kg exceeds runway weight limits.
-Airbus	A380-800	1267658	575000 kg exceeds airport weight limits.
-Airbus	ACJ320neo (Corporate Jet version)	174165	79000 kg exceeds runway weight limits.
-Beechcraft	1900D	17120	7766 kg within weight limits.
-Beechcraft	Beech 390 Premier I, IA, II (Raytheon Premier I)	12500	5670 kg within weight limits.
-Beechcraft	Beechjet 400 (from/same as MU-300-10 Diamond II)	15780	7158 kg within weight limits.
-Piper	J-3 Cub	1220	553 kg within weight limits.
-Piper	PA-24-400 Comanche	3600	1633 kg within weight limits.
-Piper	PA-46-600TP Malibu Meridian, M600	6000	2722 kg within weight limits.<img width="560" alt="image" src="https://github.com/user-attachments/assets/beab12ef-f5ce-416f-8dd2-74f4a6f4cdd4">
+<img width="560" alt="image" src="https://github.com/user-attachments/assets/beab12ef-f5ce-416f-8dd2-74f4a6f4cdd4">
 
    
 

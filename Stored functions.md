@@ -123,30 +123,6 @@ VALUES
 ```
 ***stored function 1***
 ```sql
-DELIMITER //
-CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
-RETURNS MEDIUMINT UNSIGNED 
-DETERMINISTIC
-BEGIN
-  RETURN (lbs * 0.45359237);
-END//
-DELIMITER ;
-```
-
-1. Function name: `lbs_to_kg`
-2. Input parameter `lbs`. If more than one parameters, you need to separate them with commas.
-3. Returned datatype: `MEDIUMINT UNSIGNED `
-4. Characteristic: `DETERMINISTIC` The DETERMINISTIC characteristic indicates that the function will return the same results for the same input parameter each time the function runs. By default, a function is considered nondeterministic unless specified otherwise. Using the DETERMINISTIC characteristic can help the optimizer make better execution plan choices. However, assigning the characteristic to a nondeterministic function could cause the optimizer to make incorrect choices.
-5. Function body:
-   ```sql
-   BEGIN
-      RETURN (lbs * 0.45359237);
-   END
-   ```
-   The function body must contain one RETURN statement.
-
-***testing stored function 1***
-```sql
 DELIMITER 
 //
 CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
@@ -160,6 +136,19 @@ END
 //
 DELIMITER ;
 ```
+1. Function name: `lbs_to_kg`
+2. Input parameter `lbs`. If more than one parameters, you need to separate them with commas.
+3. Returned datatype: `MEDIUMINT UNSIGNED `
+4. Characteristic: `DETERMINISTIC` The DETERMINISTIC characteristic indicates that the function will return the same results for the same input parameter each time the function runs. By default, a function is considered nondeterministic unless specified otherwise. Using the DETERMINISTIC characteristic can help the optimizer make better execution plan choices. However, assigning the characteristic to a nondeterministic function could cause the optimizer to make incorrect choices.
+5. Function body:
+   ```sql
+   BEGIN
+      RETURN (lbs * 0.45359237);
+   END
+   ```
+   The function body must contain one RETURN statement.
+
+***testing stored function 1***
 
 ```sql
 SELECT a.plane, max_weight AS max_lbs, 
@@ -169,7 +158,48 @@ FROM airplanes a  JOIN manufacturers m
 WHERE m.manufacturer = 'airbus'
 ORDER BY a.plane;
 ```
+***Updating the stored function***
+```sql
+DROP FUNCTION IF EXISTS lbs_to_kg;
 
+DELIMITER //
+CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
+RETURNS VARCHAR(50) 
+DETERMINISTIC
+BEGIN
+  DECLARE msg VARCHAR(50);
+  IF lbs > 999999 THEN SET msg = 
+    CONCAT(ROUND((lbs * 0.45359237), 0), 
+            ' kg exceeds airport weight limits.');
+  ELSEIF lbs >= 100000 AND lbs <= 999999 THEN SET msg = 
+    CONCAT(ROUND((lbs * 0.45359237), 0), 
+            ' kg exceeds runway weight limits.');
+  ELSE SET msg = CONCAT(ROUND((lbs * 0.45359237), 0), 
+            ' kg within weight limits.');
+  END IF;
+  RETURN msg;
+END//
+DELIMITER ;
+```
+```sql
+SELECT m.manufacturer, a.plane, 
+  max_weight AS max_lbs, 
+  lbs_to_kg(max_weight) AS max_kg
+FROM airplanes a INNER JOIN manufacturers m
+  ON a.manufacturer_id = m.manufacturer_id
+ORDER BY m.manufacturer, a.plane;
+```
+manufacturer	plane	max_lbs	max_kg
+Airbus	A300-200 (A300-C4-200, F4-200)	363760	164999 kg exceeds runway weight limits.
+Airbus	A319neo Sharklet	166449	75500 kg exceeds runway weight limits.
+Airbus	A380-800	1267658	575000 kg exceeds airport weight limits.
+Airbus	ACJ320neo (Corporate Jet version)	174165	79000 kg exceeds runway weight limits.
+Beechcraft	1900D	17120	7766 kg within weight limits.
+Beechcraft	Beech 390 Premier I, IA, II (Raytheon Premier I)	12500	5670 kg within weight limits.
+Beechcraft	Beechjet 400 (from/same as MU-300-10 Diamond II)	15780	7158 kg within weight limits.
+Piper	J-3 Cub	1220	553 kg within weight limits.
+Piper	PA-24-400 Comanche	3600	1633 kg within weight limits.
+Piper	PA-46-600TP Malibu Meridian, M600	6000	2722 kg within weight limits.<img width="560" alt="image" src="https://github.com/user-attachments/assets/beab12ef-f5ce-416f-8dd2-74f4a6f4cdd4">
 
    
 

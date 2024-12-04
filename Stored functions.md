@@ -23,7 +23,7 @@ CREATE FUNCTION function_name(func_parameter1, func_parameter2, ..)
     
     **The function body must contain one RETURN statement.**
 
-**Example:  find the number of years the employee has been in the company**
+**Example 1:  find the number of years the employee has been in the company**
 
 | **emp_id** | **fname** | **lname** | **start_date** |
 | --- | --- | --- | --- |
@@ -60,3 +60,9 @@ no_of_years(start_date) as 'years' from employee;
 2. function parameter: start_date
 3. datatype: int 
 4. **characteristics:** DETERMINISTIC
+
+**Example 2:  The travel database** 
+https://www.red-gate.com/simple-talk/databases/mysql/working-with-mysql-stored-functions/ 
+
+ 
+

@@ -122,4 +122,16 @@ VALUES
   ('J-3 Cub', 1003, 'piston', 1, 1220, 38.00, 22.42, 'J3');
 ```
 
+```sql
+DELIMITER //
+CREATE FUNCTION lbs_to_kg(lbs MEDIUMINT UNSIGNED)
+RETURNS MEDIUMINT UNSIGNED 
+DETERMINISTIC
+BEGIN
+  RETURN (lbs * 0.45359237);
+END//
+DELIMITER ;
+```
+
+1. Function name: `lbs_to_kg` 
 

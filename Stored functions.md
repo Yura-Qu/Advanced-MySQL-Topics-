@@ -133,5 +133,17 @@ END//
 DELIMITER ;
 ```
 
-1. Function name: `lbs_to_kg` 
+1. Function name: `lbs_to_kg`
+2. Input parameter `lbs`. If more than one parameters, you need to separate them with commas.
+3. Returned datatype: `MEDIUMINT UNSIGNED `
+4. Characteristic: `DETERMINISTIC` The DETERMINISTIC characteristic indicates that the function will return the same results for the same input parameter each time the function runs. By default, a function is considered nondeterministic unless specified otherwise. Using the DETERMINISTIC characteristic can help the optimizer make better execution plan choices. However, assigning the characteristic to a nondeterministic function could cause the optimizer to make incorrect choices.
+5. Function body:
+   ```sql
+   BEGIN
+      RETURN (lbs * 0.45359237);
+   END
+   ```
+   The function body must contain one RETURN statement.
+6. 
+   
 
